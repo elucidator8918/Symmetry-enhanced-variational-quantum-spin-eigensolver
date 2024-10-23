@@ -84,7 +84,7 @@ def ansatz(prefix, N, num_layer, circpy):
     params_index = 0
 
     for i in range(N):
-        if circpy == "s" and i == N // 2:
+        if circpy != "s" and i == N // 2:
             continue
         ansatz += X.on(i)
         
@@ -92,19 +92,19 @@ def ansatz(prefix, N, num_layer, circpy):
         ansatz += H.on(i)
         ansatz += CNOT.on(i + 1, i)
 
-    limit = N if circpy=="s" else N//2
-    c = 1 if circpy=="s" else 0
+    limit = N if circpy!="s" else N//2
+    c = 1 if circpy!="s" else 0
 
     for _ in range(num_layer):
         for i in range(0, limit, 2):
             ansatz += N_block(prefix + str(params_index), [i, i + 1])
-            if circpy!="s" and i != N - i - 2:
+            if circpy=="s" and 2*(i+1) != N:
                 ansatz += N_block(prefix + str(params_index), [N - i - 2, N - i - 1])
             params_index += 1
 
         for i in range(1, limit-c, 2):
             ansatz += N_block(prefix + str(params_index), [i, i + 1])
-            if circpy!="s" and i != N - i - 2:
+            if circpy=="s" and 2*(i+1) != N:
                 ansatz += N_block(prefix + str(params_index), [N - i - 2, N - i - 1])
             params_index += 1
 
@@ -161,7 +161,6 @@ if __name__ == '__main__':
     circ = ansatz(prefix, N, num_layer, circpy).as_ansatz()
     ham = Heis_Ham(N, J)
 
-    ham_matrix = qu.ham_heis(N, J, cyclic=False)
     eigenstates = get_eigstates(N)
     target_state = eigenstates[0] if circpy=="s" else eigenstates[1]
 
