@@ -36,9 +36,7 @@ To manage the high-resource demand of VQE for excited states, we introduce symme
 - **Cost Function Penalization**: Adding symmetry-related penalty terms to the cost function encourages the desired eigenstates.
 
 For excited states, the cost function is modified as:
-$
-\text{Cost} = \langle H \rangle + \beta \sum_{i} \langle S^2_{\text{tot}} - s(s+1) \rangle^2
-$
+$\text{Cost} = \langle H \rangle + \beta \sum_{i} \langle S^2_{\text{tot}} - s(s+1) \rangle^2$
 where $\beta$ is a penalty factor, ensuring states adhere to specific symmetry constraints.
 
 ## Implementation Details
